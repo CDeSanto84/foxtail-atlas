@@ -2,6 +2,8 @@
 
 # Foxtail Atlas
 
+[![Checks](https://github.com/CDeSanto84/foxtail-atlas/actions/workflows/checks.yml/badge.svg)](https://github.com/CDeSanto84/foxtail-atlas/actions/workflows/checks.yml)
+
 **Explore the public internet by place.**
 
 Atlas puts Shodan's indexed public IPv4 observations on a street or satellite
