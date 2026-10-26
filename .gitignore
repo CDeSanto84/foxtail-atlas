@@ -1,0 +1,19 @@
+
+# Local credentials, user records, rollback files, and dependencies
+.env
+.env.*
+!.env.example
+*.bak*
+*.log
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+node_modules/
+.local-data/
+.local/
+state/
+work/
+backups/
+.backups/
+.DS_Store

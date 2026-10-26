@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="atlas-token" content="__ATLAS_TOKEN__"><meta name="theme-color" content="#101b22">
+  <title>Foxtail Atlas</title><link rel="icon" href="/static/atlas-icon.png">
+  <link rel="stylesheet" href="/static/vendor/leaflet.css"><link rel="stylesheet" href="/static/vendor/MarkerCluster.css"><link rel="stylesheet" href="/static/style.css?v=0.2.0-b2">
+  <script defer src="/static/vendor/leaflet.js"></script><script defer src="/static/vendor/markercluster.js"></script><script defer src="/static/app.js?v=0.2.0-b2"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="/static/atlas-icon.png" alt="" width="42" height="42"><div><h1>Foxtail <span>Atlas</span></h1><p>The public internet, in place.</p></div></div>
+    <div class="topbar-right"><span class="version">v0.2</span><span class="connection"><i></i><span id="connection-label">Connecting to Shodan</span></span></div>
+  </header>
+  <main class="workspace">
+    <aside class="sidebar" aria-label="Area and discovered IPs">
+      <div class="area-panel">
+        <div class="eyebrow">YOUR EXPLORATION</div>
+        <h2 id="place-name">Coral Springs</h2><p id="place-region" class="secondary">Florida, United States</p>
+        <form id="place-form" role="search" class="place-form"><label class="sr-only" for="place-input">Find a city or region</label><input id="place-input" placeholder="Go to a city or region…" autocomplete="off"><button type="submit" aria-label="Find this place"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg></button></form>
+        <div id="place-results" class="place-results" hidden></div>
+        <div class="area-summary"><span><strong id="host-count">—</strong> <span>IPs in view</span></span><span id="location-count">— locations</span></div>
+      </div>
+      <div class="inventory-heading"><div><h3>On the map</h3><span id="inventory-context">Shodan’s indexed observations</span></div><button id="clear-filter" class="text-button" hidden>Clear filter</button></div>
+      <div class="filter-row"><label class="sr-only" for="provider-filter">Filter loaded IPs by provider</label><select id="provider-filter"><option value="">All providers</option></select><span id="provider-count">—</span></div>
+      <section class="coverage-panel" aria-label="Saved area coverage and freshness">
+        <div class="coverage-heading"><strong id="coverage-state">Checking saved areas</strong><span id="coverage-age"></span></div>
+        <div class="coverage-track" aria-hidden="true"><span id="coverage-meter"></span></div>
+        <p id="coverage-summary">Saved map discoveries stay available as you explore.</p>
+        <p id="coverage-collected"></p><p id="coverage-detail"></p><p id="coverage-pages"></p>
+        <p id="coverage-note" class="coverage-note">Saved searches are samples, not complete inventories.</p>
+        <div class="coverage-actions"><button id="search-view" class="text-button" aria-label="Search this exact view · 1 credit" hidden>Search view · 1 credit</button><button id="refresh-area" class="text-button" aria-label="Refresh saved area · 1 credit" hidden>Refresh area · 1 credit</button></div>
+      </section>
+      <div id="ip-list" class="ip-list" aria-label="Discovered IPs"></div>
+      <div id="list-message" class="list-message" hidden></div>
+      <button id="load-more" class="load-more" hidden><span id="load-more-label">Load next 100 records</span><span>1 query credit</span></button>
+      <footer class="sidebar-footer"><div><span class="source-dot"></span> Shodan connected</div><span id="credits">Checking account</span></footer>
+    </aside>
+    <section class="map-workspace" aria-label="Geographic IP map">
+      <div id="map" aria-label="Interactive geographic map of public IP observations"></div>
+      <div class="map-heading"><div class="map-heading-dot"></div><div><strong>Explore the neighborhood.</strong><span>Saved IPs follow your view. Explore to discover more.</span></div></div>
+      <div class="layer-switch" role="group" aria-label="Map appearance"><button id="layer-streets" class="active" aria-pressed="true">Streets</button><button id="layer-satellite" aria-pressed="false">Satellite</button></div>
+      <div class="map-tools"><button id="home-view" aria-label="Return to Coral Springs" title="Coral Springs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8M6 9v12h12V9M10 21v-7h4v7"/></svg></button><div><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button></div></div>
+      <div class="explore-wrap"><button id="explore-button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 1v5m0 12v5M1 12h5m12 0h5"/></svg><span id="explore-label">Checking saved areas…</span><span class="button-arrow">↗</span></button><span id="explore-cost">Checking saved data · no query credits</span></div>
+      <div class="map-status"><span id="map-status-text">Opening Coral Springs…</span><span class="estimate-label">Approximate locations</span></div>
+      <div id="toast" role="status" aria-live="polite" hidden></div>
+      <article id="detail-panel" class="detail-panel" aria-label="Selected IP details" hidden>
+        <div class="detail-header"><div class="eyebrow">IP OBSERVATION</div><button id="close-detail" aria-label="Close IP details">×</button></div>
+        <h2 id="detail-ip"></h2><div id="detail-provider" class="detail-provider"></div>
+        <div class="detail-place"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><div><strong id="detail-location"></strong><span>Shodan’s reported area</span></div></div>
+        <dl><div><dt>Network</dt><dd id="detail-asn"></dd></div><div><dt>Organization</dt><dd id="detail-org"></dd></div><div><dt>Last observed</dt><dd id="detail-seen"></dd></div><div><dt>Saved to Atlas</dt><dd id="detail-saved"></dd></div></dl>
+        <div class="detail-section"><h3>Indexed services</h3><div id="detail-ports" class="port-list"></div><p id="detail-products"></p></div>
+        <div id="comparison" class="comparison"></div>
+        <p class="location-note">This building marks an estimated network location. It does not identify the house beneath it.</p>
+        <a id="shodan-record" target="_blank" rel="noopener noreferrer" class="record-link">View full Shodan record <span>↗</span></a>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
